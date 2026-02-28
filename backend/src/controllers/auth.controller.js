@@ -1,6 +1,6 @@
 require("dotenv").config()
 const userModel = require("../models/user.model")
-
+const blacklistModel = require("../models/blacklist.model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
@@ -60,7 +60,7 @@ async function loginUser(req, res) {
             { email: email },
             { username:username }
         ]
-    })
+    }).select("+password")
 
     if (!user) {
         return res.status(400).json({
@@ -100,5 +100,27 @@ async function loginUser(req, res) {
     })
 }
 
+async function getMe(req,res) {
+    const user = await userModel.findById(req.user.id)
 
-module.exports = { registerUser, loginUser }
+    res.status(200).json({
+        message:"User Fetched Successfully",
+        user
+    })
+}
+
+async function logoutUser(req,res) {
+    const token = req.cookies.token
+
+    res.clearCookie("token")
+
+    await blacklistModel.create({
+        token
+    })
+
+    res.status(200).json({
+        message:"logout successfully"
+    })
+}
+
+module.exports = { registerUser, loginUser, getMe , logoutUser }
