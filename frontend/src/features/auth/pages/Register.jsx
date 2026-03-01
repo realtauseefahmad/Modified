@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router'
@@ -36,15 +36,18 @@ const Register = () => {
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
                     <input
+                        required
                         onInput={(e) => { setUsername(e.target.value) }}
                         type="text"
                         name='username'
                         placeholder='Enter Username' />
                     <input
+                        required
                         onInput={(e) => { setEmail(e.target.value) }}
                         type="email" name='email'
                         placeholder='Enter email' />
                     <input
+                        required
                         onInput={(e) => { setPassword(e.target.value) }}
                         type="password"
                         name='password'
