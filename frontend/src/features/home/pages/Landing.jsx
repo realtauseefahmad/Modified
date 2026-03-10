@@ -13,8 +13,8 @@ const Landing = () => {
                     Let your <span>expression</span> pick the next track.
                 </h1>
                 <p className="landing__subtitle">
-                    MoodBeats uses real-time face expression detection to curate songs for how you feel:
-                    happy, sad or surprised – no playlists required.
+                    AI Mood Player uses real-time face expression detection to curate songs for how you feel:
+                    happy, sad or surprised.
                 </p>
 
                 <div className="landing__actions">

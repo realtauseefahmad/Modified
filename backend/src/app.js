@@ -9,7 +9,10 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:5173"
+    origin: [
+        "http://localhost:5173",
+        "https://ai-mood-player-delta.vercel.app/"
+    ]
 }))
 
 app.use("/api/auth", authRoutes)
