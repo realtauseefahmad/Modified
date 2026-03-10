@@ -11,7 +11,7 @@ app.use(cors({
     credentials: true,
     origin: [
         "http://localhost:5173",
-        "https://ai-mood-player-delta.vercel.app/"
+        "https://ai-mood-player-delta.vercel.app"
     ]
 }))
 

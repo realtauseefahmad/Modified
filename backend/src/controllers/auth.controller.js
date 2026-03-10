@@ -5,23 +5,23 @@ const jwt = require("jsonwebtoken")
 const redis = require("../config/cache")
 
 
-async function registerUser(req,res) {
-    const {username , email, password} = req.body
+async function registerUser(req, res) {
+    const { username, email, password } = req.body
 
     const isAlreadyRegistered = await userModel.findOne({
-        $or:[
-            {email : email},
-            {username : username}
+        $or: [
+            { email: email },
+            { username: username }
         ]
     })
 
-    if(isAlreadyRegistered){
+    if (isAlreadyRegistered) {
         return res.status(400).json({
-            message:"User with the same Email or Username already exist"
+            message: "User with the same Email or Username already exist"
         })
     }
 
-    const hash = await bcrypt.hash(password,10)
+    const hash = await bcrypt.hash(password, 10)
 
     const user = await userModel.create({
         username,
@@ -29,7 +29,7 @@ async function registerUser(req,res) {
         password: hash
     })
 
-     const token = jwt.sign(
+    const token = jwt.sign(
         {
             id: user._id,
             username: user.username
@@ -57,12 +57,12 @@ async function registerUser(req,res) {
 }
 
 async function loginUser(req, res) {
-    const { email, password, username } = req.body;
+    const { username, email, password } = req.body;
 
     const user = await userModel.findOne({
         $or: [
             { email: email },
-            { username:username }
+            { username: username }
         ]
     }).select("+password")
 
@@ -108,25 +108,25 @@ async function loginUser(req, res) {
     })
 }
 
-async function getMe(req,res) {
+async function getMe(req, res) {
     const user = await userModel.findById(req.user.id)
 
     res.status(200).json({
-        message:"User Fetched Successfully",
+        message: "User Fetched Successfully",
         user
     })
 }
 
-async function logoutUser(req,res) {
+async function logoutUser(req, res) {
     const token = req.cookies.token
 
     res.clearCookie("token")
 
-    await redis.set(token, Date.now().toString(),"EX",60*60)
+    await redis.set(token, Date.now().toString(), "EX", 60 * 60)
 
     res.status(200).json({
-        message:"logout successfully"
+        message: "logout successfully"
     })
 }
 
-module.exports = { registerUser, loginUser, getMe , logoutUser }
+module.exports = { registerUser, loginUser, getMe, logoutUser }
